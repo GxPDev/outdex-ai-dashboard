@@ -1,0 +1,232 @@
+
+import {
+  FaXTwitter,
+  FaInstagram,
+  FaLinkedin,
+  FaDiscord,
+  FaYoutube,
+} from "react-icons/fa6";
+import MarketsSection from "./MarketsSection";
+
+export default function HomeRest() {
+  return (
+    <div className="px-6 md:px-10 py-20 space-y-24">
+
+      {/* ========================= */}
+      {/* FROM SIGNALS TO MARKETS */}
+      {/* ========================= */}
+      <section>
+        <div className="flex justify-between items-center mb-10">
+          <div>
+            <h2 className="text-2xl font-semibold text-slate-900">
+              From Signals to Markets
+            </h2>
+            <p className="text-sm text-slate-500 mt-1">
+              AI-generated markets derived from real-time signals.
+            </p>
+          </div>
+          <span className="text-sm text-blue-600 cursor-pointer">
+            View all markets →
+          </span>
+        </div>
+
+        <MarketsSection />
+      </section>
+
+      {/* ========================= */}
+      {/* INTELLIGENCE */}
+      {/* ========================= */}
+      <section className="bg-white/70 backdrop-blur rounded-3xl p-8 border border-slate-200">
+        <h3 className="text-lg font-semibold text-slate-900 mb-8">
+          Focused Market Intelligence
+        </h3>
+
+        <div className="grid md:grid-cols-4 gap-6">
+          {[
+            "FX signals across currency pairs",
+            "Crypto momentum detection",
+            "Stock sentiment tracking",
+            "Commodity macro signals",
+          ].map((text, i) => (
+            <div
+              key={i}
+              className="bg-white p-5 rounded-xl border border-slate-200 hover:shadow-md transition"
+            >
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 bg-blue-500 rounded-full" />
+                <p className="text-sm font-medium text-slate-700">
+                  {text}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ========================= */}
+      {/* PROCESS FLOW */}
+      {/* ========================= */}
+      <section className="text-center">
+        <div className="grid md:grid-cols-4 gap-6">
+          {[
+            "Signals detected",
+            "AI structures markets",
+            "You act",
+            "Outcomes resolve",
+          ].map((step, i) => (
+            <div key={i}>
+              <p className="text-xs text-slate-400">0{i + 1}</p>
+              <p className="font-semibold text-slate-900 mt-2">
+                {step}
+              </p>
+              <p className="text-sm text-slate-500 mt-1">
+                {descriptions[i]}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ========================= */}
+      {/* FOOTER */}
+      {/* ========================= */}
+      <footer className="pt-12 border-t border-slate-200">
+
+        <div className="flex flex-col md:flex-row justify-between gap-8">
+
+          {/* BRAND */}
+          <div>
+            <h4 className="font-semibold text-slate-900 text-lg">
+              Outdex
+            </h4>
+            <p className="text-sm text-slate-500 mt-2 max-w-sm">
+              The intelligence layer for global financial markets.
+            </p>
+          </div>
+
+          {/* LINKS */}
+          <div className="flex gap-6 text-sm text-slate-500">
+            <span>Docs</span>
+            <span>About</span>
+            <span>Privacy</span>
+            <span>Terms</span>
+          </div>
+
+          {/* SOCIALS */}
+          <div className="flex gap-4 text-slate-600 text-lg">
+
+            <Social icon={<FaXTwitter />} />
+            <Social icon={<FaInstagram />} />
+            <Social icon={<FaLinkedin />} />
+            <Social icon={<FaDiscord />} />
+            <Social icon={<FaYoutube />} />
+
+          </div>
+
+        </div>
+
+        <p className="text-xs text-slate-400 mt-8">
+          © 2025 Outdex. Trading involves risk.
+        </p>
+
+      </footer>
+
+    </div>
+  );
+}
+
+const descriptions = [
+  "AI scans global markets in real time",
+  "Signals are analyzed and markets created",
+  "Choose how to express your view",
+  "Markets settle fairly and transparently",
+];
+
+function Card({ title, tag, yes, no, accent }: any) {
+  return (
+    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-[0_10px_30px_rgba(15,23,42,0.06)] hover:shadow-xl transition">
+      <p className="text-xs text-slate-500">{tag}</p>
+
+      <p className="mt-2 font-semibold text-slate-900">
+        {title}
+      </p>
+      <p className="text-xs text-slate-400 mt-1">Ends in 18h 24m</p>
+
+      <div className="flex justify-between mt-5">
+        <div>
+          <p className="text-xs text-slate-500">YES</p>
+          <p className={`text-xl font-bold ${accent}`}>{yes}</p>
+        </div>
+
+        <div className="text-right">
+          <p className="text-xs text-slate-500">NO</p>
+          <p className="text-lg text-slate-500">{no}</p>
+        </div>
+      </div>
+
+      <button className="mt-6 w-full bg-slate-900 text-white py-3 rounded-xl">
+        Enter Market
+      </button>
+    </div>
+  );
+}
+
+function RangeCard() {
+  return (
+    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition">
+      <p className="text-xs text-slate-500">Gold</p>
+
+      <p className="mt-2 font-semibold text-slate-900">
+        Where will Gold close in 24h?
+      </p>
+      <p className="text-xs text-slate-400 mt-1">Ends in 18h 24m</p>
+
+      <div className="mt-5 space-y-2 text-sm">
+        {["18%", "32%", "28%", "22%"].map((v, i) => (
+          <div key={i}>
+            <div className="h-2 bg-slate-200 rounded-full">
+              <div
+                className="h-full bg-yellow-500"
+                style={{ width: v }}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <button className="mt-6 w-full bg-slate-900 text-white py-3 rounded-xl">
+        Enter Market
+      </button>
+    </div>
+  );
+}
+
+function CloseCard() {
+  return (
+    <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-xl transition">
+      <p className="text-xs text-slate-500">Stocks • NVDA</p>
+
+      <p className="mt-2 font-semibold text-slate-900">
+        What will NVDA close at this week?
+      </p>
+      <p className="text-xs text-slate-400 mt-1">Ends in 18h 24m</p>
+
+      <input
+        placeholder="$ 950.00"
+        className="mt-5 w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 text-sm"
+      />
+
+      <button className="mt-6 w-full bg-slate-900 text-white py-3 rounded-xl">
+        Submit Prediction
+      </button>
+    </div>
+  );
+}
+
+function Social({ icon }: any) {
+  return (
+    <div className="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 hover:bg-slate-100 cursor-pointer transition">
+      {icon}
+    </div>
+  );
+}
