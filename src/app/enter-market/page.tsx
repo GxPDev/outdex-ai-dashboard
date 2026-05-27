@@ -7,12 +7,13 @@ import SimulatedMarketOptions from "./components/SimulatedMarketOptions";
 import ActivityTicker from "./components/ActivityTicker";
 import Timer from "./components/Timer";
 import { mockMarkets } from "../data/mockMarkets";
-import { useRef, useState } from "react";
+import { useState } from "react";
+import type { ActivityEvent } from "./logic/useSimulatedMarket";
 
 
 export default function EnterMarketPage() {
-  const [activityEvents, setActivityEvents] = useState([]);
-  const handleActivity = (event) => {
+  const [activityEvents, setActivityEvents] = useState<ActivityEvent[]>([]);
+  const handleActivity = (event: ActivityEvent) => {
     setActivityEvents((prev) => [...prev.slice(-9), event]);
   };
   return (

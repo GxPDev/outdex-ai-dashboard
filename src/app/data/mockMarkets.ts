@@ -34,6 +34,7 @@ export const mockMarkets: Market[] = [
     type: "CLOSE_PRICE",
     confidence: 72,
     risk: "Low",
+    options: [],
     currentPrice: 192.34,
     participants: 45,
     closesIn: 14400,

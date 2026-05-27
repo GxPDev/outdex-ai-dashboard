@@ -7,8 +7,8 @@ const MarketOptions = ({ markets, onSelect }: { markets: Market[]; onSelect: (ma
       <button key={market.id} onClick={() => onSelect(market)} className="focus:outline-none">
         <div className="hover:shadow-lg transition">
           <div className="rounded-lg bg-blue-50 p-4 border border-blue-100">
-            <div className="font-semibold text-blue-700">{market.name}</div>
-            <div className="text-xs text-gray-500">{market.description}</div>
+            <div className="font-semibold text-blue-700">{market.question}</div>
+            <div className="text-xs text-gray-500">{market.pair}</div>
           </div>
         </div>
       </button>
