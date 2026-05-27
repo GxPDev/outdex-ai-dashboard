@@ -11,4 +11,9 @@ export interface Market {
   participants: number;
   closesIn: number; // seconds
   createdAt: number;
+  // Optional runtime/resolution fields
+  pool?: number;
+  finalResult?: string | number;
+  predictions?: { userId: string; value: string | number }[];
+  currentPrice?: number;
 }

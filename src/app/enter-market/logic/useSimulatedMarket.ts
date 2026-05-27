@@ -24,14 +24,14 @@ export function useSimulatedMarket(
   initialMarket: Market,
   emitActivity?: (event: ActivityEvent) => void
 ) {
-  const [market, setMarket] = useState<Market & { status: MarketStatus; finalResult?: string }>(
+  const [market, setMarket] = useState<Market & { status: MarketStatus; finalResult?: string | number }>(
     { ...initialMarket, status: "OPEN" }
   );
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     intervalRef.current = setInterval(() => {
-      setMarket((prev: Market & { status: MarketStatus; finalResult?: string }) => {
+      setMarket((prev: Market & { status: MarketStatus; finalResult?: string | number }) => {
         let closesIn = Math.max(0, (prev.closesIn ?? 0) - 1);
         let confidence = Math.max(0, Math.min(100, (prev.confidence ?? 50) + (Math.random() - 0.5) * 2));
         let participants = prev.participants + (Math.random() < 0.1 ? 1 : 0);
