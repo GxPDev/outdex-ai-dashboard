@@ -33,6 +33,7 @@ AI-powered market prediction dashboard built with Next.js, React, and TypeScript
 This project demonstrates the frontend architecture of an AI-powered prediction platform focused on financial and market intelligence systems. The dashboard is designed for scalable analytics, prediction visualization, and modern SaaS user experience.
 
 https://outdex-ai-dashboard-120msqn8j-metadxigna.vercel.app
+
 https://outdex-ai-dashboard.vercel.app/enter-market
 
 👨‍💻 Developer
