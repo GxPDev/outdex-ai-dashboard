@@ -64,7 +64,7 @@ export default function Hero() {
 
             <button
               className="px-6 py-3 rounded-2xl text-sm font-medium bg-slate-100 text-slate-600 hover:bg-slate-200 transition leading-[1.05] tracking-[-0.02em]"
-              onClick={() => router.push('/explore-signals')}
+              onClick={() => router.push('/ZinaxMarketFeed')}
             >
               Explore Signals
             </button>
