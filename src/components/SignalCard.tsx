@@ -71,31 +71,13 @@ export function detectSignalType(prices: number[]) {
   return "range";
 }
 // Color logic for sparkline based on confidence and direction
-const getColor = (confidence: number, direction?: string) => {
-  if (direction === "bull") {
-    return confidence > 75 ? "#22c55e" : "#4ade80";
-  }
-  if (direction === "bear") {
-    return confidence > 75 ? "#ef4444" : "#f87171";
-  }
-  return "#3b82f6";
-};
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { useAnimatedNumber } from "./useAnimatedNumber";
 import { FaArrowRight } from "react-icons/fa";
-import { TbClockHour3 } from "react-icons/tb";
 import Sparkline from "./Sparkline";
-import { AnimatedPercent, AnimatedMoney } from "./AnimatedNumber";
+import { AnimatedPercent } from "./AnimatedNumber";
 
-const assetIcons: Record<string, React.ReactElement> = {
-  btc: <img src="/icons/btc.svg" alt="BTC" className="w-5 h-5" />,
-  eth: <img src="/icons/eth.svg" alt="ETH" className="w-5 h-5" />,
-  gold: <img src="/icons/gold.svg" alt="Gold" className="w-5 h-5" />,
-  usdjpy: <img src="/icons/usdjpy.svg" alt="USDJPY" className="w-5 h-5" />,
-  eurusd: <img src="/icons/eurusd.svg" alt="EURUSD" className="w-5 h-5" />,
-  tsla: <img src="/icons/tsla.svg" alt="TSLA" className="w-5 h-5" />,
-};
+// assetIcons removed — icons are not used here currently.
 
 // Fallback chart data if no prices are available
 const initialChart = [100, 102, 101, 103, 104, 106, 105, 107, 108, 110];
@@ -131,7 +113,7 @@ export default function SignalCard({ signal: initialSignal, icon }: { signal: Si
   const timeframe = signal.timeframe;
   const type = signal.type;
   const confidence = signal.confidence;
-  const bias = signal.bias;
+  // bias intentionally unused currently
   const volume = signal.volume;
   const traders = signal.traders;
   const closingIn = signal.closingIn;
@@ -150,19 +132,15 @@ export default function SignalCard({ signal: initialSignal, icon }: { signal: Si
             prices: data.prices,
           }));
         }
-      } catch (e) {
-        // Optionally handle error
-      }
+      } catch (err) {
+          // Keep errors visible during development
+          console.warn('SignalCard: price fetch error', err);
+        }
     }, 2000);
     return () => clearInterval(interval);
   }, [signal.pair]);
   // Tag color map
-  const tagColors: Record<string, string> = {
-    'High Confidence': 'text-green-400',
-    'New': 'text-blue-400',
-    'Trending': 'text-purple-400',
-    'Closing Soon': 'text-red-400',
-  };
+  // tagColors intentionally removed — colors handled inline where needed
 
   // Compute tags based on signal properties (single declaration)
   const tags: string[] = [];
@@ -178,6 +156,7 @@ export default function SignalCard({ signal: initialSignal, icon }: { signal: Si
     >
       {/* 1. Pair + timeframe */}
       <div className="flex items-center gap-2 mb-1">
+        {icon && <span className="inline-flex items-center mr-1">{icon}</span>}
         <span className="text-xs font-medium text-white/40 tracking-wide uppercase">{pair} • {timeframe}</span>
       </div>
 

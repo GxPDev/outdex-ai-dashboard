@@ -10,16 +10,6 @@ export interface ActivityEvent {
   timestamp: number;
 }
 
-function getNextStatus(status: MarketStatus): MarketStatus {
-  switch (status) {
-    case "OPEN": return "LOCKED";
-    case "LOCKED": return "RESOLVING";
-    case "RESOLVING": return "RESOLVED";
-    case "RESOLVED": return "OPEN";
-    default: return "OPEN";
-  }
-}
-
 export function useSimulatedMarket(
   initialMarket: Market,
   emitActivity?: (event: ActivityEvent) => void

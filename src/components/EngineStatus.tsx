@@ -3,12 +3,6 @@
 import { useEffect, useState } from "react";
 
 export default function EngineStatus() {
-  const messages = [
-    "Tracking global financial markets",
-    "Scanning FX, Crypto, Stocks",
-    "Analyzing volatility & momentum",
-  ];
-
   // No need for index state, message is static
   const [count, setCount] = useState(1284);
 

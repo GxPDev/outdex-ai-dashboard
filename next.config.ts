@@ -1,12 +1,11 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // During CI/build (e.g. Vercel) some lint rules are strict and cause
-  // the build to fail. Ignore ESLint during builds to allow the production
-  // compilation to complete. Developers should still run `npm run lint`
-  // locally to catch issues.
+  // Re-enable ESLint during builds so CI fails on lint errors.
+  // This was temporarily disabled to validate type fixes; re-enabling
+  // will ensure the production build fails until lint issues are fixed.
   eslint: {
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
 };
 

@@ -155,7 +155,7 @@ export function createMarketFromSignal(signal: Signal, pool = 0, participants = 
     pair: signal.asset,
     type,
     question: generateMarketQuestion(signal, type),
-    options: generateMarketOptions(type, signal),
+    options: generateMarketOptions(type),
     pool,
     participants,
     status: "CREATED",
@@ -181,7 +181,7 @@ function generateMarketQuestion(signal: Signal, type: MarketType): string {
   return "";
 }
 
-function generateMarketOptions(type: MarketType, signal: Signal): string[] {
+function generateMarketOptions(type: MarketType): string[] {
   if (type === "YES_NO") return ["Yes", "No"];
   if (type === "RANGE") return ["Low", "Medium", "High", "Extreme"];
   if (type === "CLOSE_PRICE") return ["Enter Price"];

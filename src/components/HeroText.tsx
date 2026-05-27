@@ -38,7 +38,7 @@ export default function HeroText() {
       setIndex((prev) => (prev + 1) % rotating.length);
     }, 2500);
     return () => clearInterval(timer);
-  }, []);
+  }, [rotating.length]);
 
   return (
     <div className="text-5xl md:text-6xl font-semibold leading-[1.05] tracking-[-0.02em]">

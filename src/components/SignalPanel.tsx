@@ -1,6 +1,6 @@
 
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 // Utility to format time ago for the header
 function formatPanelTimeAgo(timestamp: number) {
   const diff = Math.floor((Date.now() - timestamp) / 1000);
@@ -11,7 +11,6 @@ function formatPanelTimeAgo(timestamp: number) {
 }
 import { motion } from "framer-motion";
 import MiniChart from "./MiniChart";
-import EngineStatus from "./EngineStatus";
 
 function formatTimeAgo(timestamp: number) {
   const diff = Math.floor((Date.now() - timestamp) / 1000);
@@ -36,7 +35,6 @@ type Signal = {
 
 export default function SignalPanel() {
   const [liveSignals, setLiveSignals] = useState<Signal[]>([]);
-  const [now, setNow] = useState(0);
   const [lastUpdate, setLastUpdate] = useState(0);
 
   // Seed initial signals after mount (avoid Date.now in module render)
@@ -50,7 +48,6 @@ export default function SignalPanel() {
     // Defer state initialization to avoid synchronous setState inside effect
     const t = setTimeout(() => {
       setLiveSignals(initial);
-      setNow(Date.now());
       setLastUpdate(Date.now());
     }, 0);
     return () => clearTimeout(t);
@@ -64,14 +61,10 @@ export default function SignalPanel() {
     return () => clearInterval(interval);
   }, []);
 
-  // Update the 'now' timer every 10s for live label
-  useEffect(() => {
-    const interval = setInterval(() => setNow(Date.now()), 10000);
-    return () => clearInterval(interval);
-  }, []);
+  // 'now' timer removed — not used in rendering. Keep the panel lightweight.
 
-  // List of possible assets and chart data
-  const assetOptions = [
+  // List of possible assets and chart data (memoized to keep effect stable)
+  const assetOptions = useMemo(() => [
     { asset: "BTC", title: "Volatility spike" },
     { asset: "ETH", title: "Liquidity surge" },
     { asset: "EUR/USD", title: "Breakout pressure" },
@@ -80,7 +73,7 @@ export default function SignalPanel() {
     { asset: "AAPL", title: "Momentum build" },
     { asset: "TSLA", title: "Volume spike" },
     { asset: "JPY/USD", title: "Trend reversal" },
-  ];
+  ], []);
 
   function randomChartData() {
     // Generate 8 random y values between 4 and 20 for sparkline
@@ -88,10 +81,6 @@ export default function SignalPanel() {
   }
 
   useEffect(() => {
-    const nowInterval = setInterval(() => {
-      setNow(Date.now());
-    }, 1000);
-
     const signalInterval = setInterval(() => {
       const assetIdx = Math.floor(Math.random() * assetOptions.length);
       const { asset, title } = assetOptions[assetIdx];
@@ -109,10 +98,9 @@ export default function SignalPanel() {
     }, 15000);
 
     return () => {
-      clearInterval(nowInterval);
       clearInterval(signalInterval);
     };
-  }, []);
+  }, [assetOptions]);
 
   return (
     <div className="w-full rounded-3xl border border-white/70 bg-white/90 p-5 shadow-[0_15px_40px_rgba(15,23,42,0.08)] backdrop-blur">
@@ -128,8 +116,6 @@ export default function SignalPanel() {
       <div className="space-y-5">
         {liveSignals.map((s, i) => {
           // Use s.chart if present, otherwise fallback to a static chart for initial signals
-          const chartData = s.chart || [20, 12, 16, 8, 14, 6, 12, 4];
-          const points = chartData.map((y: number, idx: number) => `${idx * 7},${24 - y}`).join(" ");
           return (
             <motion.div
               layout

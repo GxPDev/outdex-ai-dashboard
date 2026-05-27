@@ -100,7 +100,7 @@ export default function MarketCards() {
       </div>
 
       <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-4">
-        {markets.map((m, idx) => (
+        {markets.map((m) => (
           <div
             key={m.asset}
             className={

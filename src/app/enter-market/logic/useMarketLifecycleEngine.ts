@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Market, MarketStatus, resolveMarket } from "./marketLifecycle";
+import { Market, resolveMarket } from "./marketLifecycle";
 
 type MarketInternal = Market & { _lockedAt?: number; _resolvingAt?: number };
 // If resolveMarket is not exported from marketLifecycle, implement it below:
@@ -48,7 +48,8 @@ export function useMarketLifecycleEngine(initialMarkets: Market[]) {
               return { ...market, _lockedAt: Date.now() };
             }
             if (Date.now() - (market._lockedAt as number) > 2000) {
-              const { _lockedAt, ...rest } = market as MarketInternal;
+              const rest = { ...(market as MarketInternal) } as MarketInternal;
+              delete (rest as MarketInternal)._lockedAt;
               return { ...(rest as MarketInternal), status: "RESOLVING" };
             }
             return market;
@@ -60,7 +61,8 @@ export function useMarketLifecycleEngine(initialMarkets: Market[]) {
             }
             if (Date.now() - (market._resolvingAt as number) > 2000) {
               const finalValue = simulateFinalValue(market);
-              const { _resolvingAt, ...rest } = market as MarketInternal;
+              const rest = { ...(market as MarketInternal) } as MarketInternal;
+              delete (rest as MarketInternal)._resolvingAt;
               return resolveMarket({ ...(rest as Market) }, finalValue as string | number);
             }
             return market;

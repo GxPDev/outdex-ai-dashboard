@@ -11,6 +11,9 @@ export function useSignalsWS(onUpdate: (u: unknown) => void) {
       try {
         data = JSON.parse(e.data);
       } catch (err) {
+        // Keep parsing errors visible during development.
+        // Use the caught error so the linter doesn't flag it as unused.
+        console.warn("useSignalsWS: failed to parse message", err);
         data = undefined;
       }
       onUpdate(data);

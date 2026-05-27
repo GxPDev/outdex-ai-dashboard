@@ -253,7 +253,7 @@ export default function MarketCard({ market }: MarketCardProps) {
               <span className="text-sm text-green-300 font-semibold mt-1">{market.winners.length} Winner{market.winners.length > 1 ? 's' : ''}</span>
               <span className="text-xs text-green-200 mt-0.5">Payout: <span className="font-mono">{market.payoutPerWinner}</span> ODX</span>
               <div className="flex flex-wrap justify-center gap-1 mt-2">
-                {market.winners.slice(0, 5).map((uid: string, i: number) => (
+                {market.winners.slice(0, 5).map((uid: string) => (
                   <span key={uid} className="bg-green-900/60 text-green-200 text-[10px] px-2 py-0.5 rounded-full font-mono shadow-sm">{uid.slice(0, 6)}…</span>
                 ))}
                 {market.winners.length > 5 && (

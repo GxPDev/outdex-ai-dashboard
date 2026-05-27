@@ -1,13 +1,13 @@
 // src/app/enter-market/components/ZinaxMarketFeed.tsx
 
-import React, { useMemo } from "react";
+import React from "react";
 import { useZinaxOrchestratorFeed } from "../logic/useZinaxOrchestrator";
-import { OrchestratedMarket, ZinaxSignal, ZinaxOrchestratorStats } from "../logic/zinaxOrchestrator";
-import { motion, AnimatePresence } from "framer-motion";
+import { ZinaxSignal } from "../logic/zinaxOrchestrator";
+import { motion } from "framer-motion";
 
 
 export default function ZinaxMarketFeed() {
-  const { signals, markets, stats } = useZinaxOrchestratorFeed(2500);
+  const { signals, stats } = useZinaxOrchestratorFeed(2500);
 
   // For live scanning pulse
   const scanningCount = signals.filter(s => s.status === "Scanning").length;
@@ -97,7 +97,7 @@ function SignalPipelineCard({ signal }: { signal: ZinaxSignal }) {
       <div className="text-xs mt-1 italic text-zinc-400">{signal.reasoning}</div>
       {/* Pipeline steps */}
       <div className="flex gap-2 mt-2">
-        {steps.map((step, i) =>
+        {steps.map((step) =>
           step.label ? (
             <span
               key={step.label}
@@ -116,30 +116,4 @@ function SignalPipelineCard({ signal }: { signal: ZinaxSignal }) {
   );
 }
 
-function ZinaxMarketCard({ market }: { market: OrchestratedMarket }) {
-  return (
-    <div className="bg-zinc-900/80 border border-zinc-800 rounded-xl p-6 shadow-lg flex flex-col gap-2 relative">
-      <div className="absolute right-4 top-4 text-2xl">
-        {market.tier === "Elite" && <span title="Elite">💎</span>}
-        {market.tier === "Hot" && <span title="Hot">🔥</span>}
-        {market.tier === "Active" && <span title="Active">⚡</span>}
-        {market.tier === "Watch" && <span title="Watch">👀</span>}
-      </div>
-      <div className="text-xs text-zinc-400 mb-1">{market.signal.assetClass.toUpperCase()}</div>
-      <div className="text-lg font-bold text-blue-200 mb-1">{market.question}</div>
-      <div className="flex gap-4 text-sm text-zinc-300">
-        <span>Confidence: <span className="font-mono text-blue-400">{market.signal.confidence.toFixed(1)}%</span></span>
-        <span>Volatility: <span className="font-mono">{market.signal.volatility.toFixed(1)}</span></span>
-        <span>Risk: <span className="font-mono text-red-400">{market.signal.risk.toFixed(1)}</span></span>
-        <span>Volume: <span className="font-mono">{market.signal.volume.toFixed(1)}</span></span>
-      </div>
-      <div className="flex gap-4 text-xs text-zinc-500 mt-1">
-        <span>Pool: <span className="font-mono">{market.pool}</span></span>
-        <span>Participants: <span className="font-mono">{market.participants}</span></span>
-        <span>Tier: <span className="font-mono">{market.tier}</span></span>
-      </div>
-      <div className="text-xs text-zinc-400 mt-2">AI Score: <span className="font-mono text-green-400">{market.score.toFixed(1)}</span></div>
-      <div className="text-xs text-zinc-500 mt-1">Signal: {market.signal.asset} | Trend: {market.signal.trend.toFixed(1)} | Momentum: {market.signal.momentum.toFixed(1)}</div>
-    </div>
-  );
-}
+// ZinaxMarketCard intentionally removed — not used in feed rendering currently.

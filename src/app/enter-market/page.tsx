@@ -7,7 +7,7 @@ import SimulatedMarketOptions from "./components/SimulatedMarketOptions";
 import ActivityTicker from "./components/ActivityTicker";
 import Timer from "./components/Timer";
 import { mockMarkets } from "../data/mockMarkets";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import type { ActivityEvent } from "./logic/useSimulatedMarket";
 
 

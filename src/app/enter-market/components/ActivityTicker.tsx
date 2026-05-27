@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo } from "react";
+import React, { useRef, useMemo } from "react";
 import type { ActivityEvent } from "../logic/useSimulatedMarket";
 
 export default function ActivityTicker({ events }: { events: ActivityEvent[] }) {
