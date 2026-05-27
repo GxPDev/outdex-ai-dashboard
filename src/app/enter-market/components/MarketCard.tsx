@@ -2,14 +2,16 @@
 
 import { formatTime } from "../utils/formatTime";
 import { formatPool } from "../utils/formatPool";
-import type { Market } from "../types/market";
+import type { Market as BaseMarket } from "../types/market";
 import { MarketStatus } from "../logic/useSimulatedMarket";
 import { MarketStatusBadge } from "./MarketStatusBadge";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState, useMemo } from "react";
+import type { Market } from "../types/market";
+
 // Generate dynamic AI reasoning for a market
-function useZinaxReasoning(market: any) {
+function useZinaxReasoning(market: Market) {
   const [tick, setTick] = useState(0);
   useEffect(() => {
     const id = setInterval(() => setTick((t) => t + 1), 3500 + Math.random() * 2000);
@@ -27,7 +29,7 @@ function useZinaxReasoning(market: any) {
     if ((market.risk ?? "") === "High") reasons.push("Caution: High risk profile detected");
     if ((market.participants ?? 0) > 100) reasons.push("Surge in participant activity");
     if ((market.pool ?? 0) > 1_000_000) reasons.push("Premium pool attracting elite traders");
-    // Add some random flavor
+    // Deterministic flavor based on tick and market id to avoid impure calls during render
     const aiFlavors = [
       "Pattern recognition: bullish engulfing spotted",
       "Volume spike detected on recent tick",
@@ -40,13 +42,21 @@ function useZinaxReasoning(market: any) {
       "Order book depth increasing",
       "Momentum building on higher timeframe"
     ];
-    if (Math.random() > 0.5) reasons.push(aiFlavors[Math.floor(Math.random() * aiFlavors.length)]);
+    // Use a deterministic index rather than Math.random() so the hook is pure
+    reasons.push(aiFlavors[(tick + market.id.length) % aiFlavors.length]);
     return reasons[Math.floor(tick % reasons.length)] || "Zinax is monitoring market conditions...";
   }, [market, tick]);
 }
 
+type MarketWithUI = BaseMarket & {
+  winners?: string[];
+  payoutPerWinner?: number | string;
+  resolvedAt?: number;
+  finalResult?: any;
+  status?: string;
+};
 
-type MarketCardProps = { market: any };
+type MarketCardProps = { market: MarketWithUI };
 
 function useAnimatedNumber(value: number) {
   const [display, setDisplay] = useState(value);
@@ -133,7 +143,7 @@ export default function MarketCard({ market }: MarketCardProps) {
       </div>
       <div className="flex items-center justify-between">
         <p className="text-xs text-gray-400">
-          {market.pair} <span className="mx-1">•</span> {formatTime(market.closesIn)}
+          {market.pair} <span className="mx-1">•</span> {formatTime(market.closesIn ?? 0)}
         </p>
         <span className={`ml-2 text-xs flex items-center gap-1 ${tierConfig.badgeClass}`}>{tierConfig.badge}</span>
       </div>
@@ -261,7 +271,7 @@ export default function MarketCard({ market }: MarketCardProps) {
 
       <div className="flex justify-between text-xs text-gray-500 mt-2">
         <span>
-          {isResolved ? 'Closed' : `Closes in ${formatTime(market.closesIn)}`}
+          {isResolved ? 'Closed' : `Closes in ${formatTime(market.closesIn ?? 0)}`}
         </span>
         <motion.span layout>{animatedParticipants} participants</motion.span>
       </div>

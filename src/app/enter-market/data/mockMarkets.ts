@@ -12,6 +12,7 @@ export const mockMarkets: Market[] = [
     participants: 120,
     closesIn: 3600,
     createdAt: Date.now(),
+    pool: 3200000, // $3.2M
   },
   {
     id: "2",
@@ -24,5 +25,6 @@ export const mockMarkets: Market[] = [
     participants: 98,
     closesIn: 7200,
     createdAt: Date.now(),
+    pool: 450000, // $450K
   },
 ];

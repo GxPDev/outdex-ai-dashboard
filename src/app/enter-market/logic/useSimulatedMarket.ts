@@ -32,11 +32,11 @@ export function useSimulatedMarket(
   useEffect(() => {
     intervalRef.current = setInterval(() => {
       setMarket((prev: Market & { status: MarketStatus; finalResult?: string }) => {
-        let closesIn = Math.max(0, (prev.closesIn ?? 0) - 1);
-        let confidence = Math.max(0, Math.min(100, (prev.confidence ?? 50) + (Math.random() - 0.5) * 2));
-        let participants = prev.participants + (Math.random() < 0.1 ? 1 : 0);
-        let pool = prev.pool + (Math.random() < 0.1 ? Math.floor(Math.random() * 1000) : 0);
-        let currentPrice = prev.currentPrice !== undefined ? prev.currentPrice + (Math.random() - 0.5) * 0.2 : undefined;
+        const closesIn = Math.max(0, (prev.closesIn ?? 0) - 1);
+        const confidence = Math.max(0, Math.min(100, (prev.confidence ?? 50) + (Math.random() - 0.5) * 2));
+        const participants = prev.participants + (Math.random() < 0.1 ? 1 : 0);
+        const pool = prev.pool + (Math.random() < 0.1 ? Math.floor(Math.random() * 1000) : 0);
+        const currentPrice = prev.currentPrice !== undefined ? prev.currentPrice + (Math.random() - 0.5) * 0.2 : undefined;
         let status = prev.status;
         let finalResult = prev.finalResult;
 

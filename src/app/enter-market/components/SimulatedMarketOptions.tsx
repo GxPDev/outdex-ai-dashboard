@@ -22,7 +22,8 @@ export default function SimulatedMarketOptions({ initialMarkets, onActivity }: S
       })
       .map((m) => ({ ...m, status: "OPEN" as MarketStatus }));
   });
-  const [pendingEvents, setPendingEvents] = useState<ActivityEvent[]>([]);
+  // Emit activity events directly via `onActivity` instead of batching via
+  // state to avoid setState-in-effect lint errors.
 
   // Simulate market state changes and batch activity events
   useEffect(() => {
@@ -31,11 +32,11 @@ export default function SimulatedMarketOptions({ initialMarkets, onActivity }: S
       setMarkets((prevMarkets) => {
         return prevMarkets.map((market) => {
           // Simulate closesIn countdown
-          let closesIn = Math.max(0, (market.closesIn ?? 0) - 1);
-          let confidence = Math.max(0, Math.min(100, (market.confidence ?? 50) + (Math.random() - 0.5) * 2));
-          let participants = market.participants + (Math.random() < 0.1 ? 1 : 0);
-          let pool = market.pool + (Math.random() < 0.1 ? Math.floor(Math.random() * 1000) : 0);
-          let currentPrice = market.currentPrice !== undefined ? market.currentPrice + (Math.random() - 0.5) * 0.2 : undefined;
+          const closesIn = Math.max(0, (market.closesIn ?? 0) - 1);
+          const confidence = Math.max(0, Math.min(100, (market.confidence ?? 50) + (Math.random() - 0.5) * 2));
+          const participants = market.participants + (Math.random() < 0.1 ? 1 : 0);
+          const pool = market.pool + (Math.random() < 0.1 ? Math.floor(Math.random() * 1000) : 0);
+          const currentPrice = market.currentPrice !== undefined ? market.currentPrice + (Math.random() - 0.5) * 0.2 : undefined;
           let status = market.status;
           let finalResult = market.finalResult;
 
@@ -96,19 +97,14 @@ export default function SimulatedMarketOptions({ initialMarkets, onActivity }: S
           };
         });
       });
-      // After state update, batch events for emission
-      if (newEvents.length > 0) setPendingEvents((prev) => [...prev, ...newEvents]);
+      // After state update, emit events immediately via onActivity.
+      if (newEvents.length > 0) newEvents.forEach((e) => onActivity?.(e));
     }, 1000);
     return () => clearInterval(interval);
   }, [onActivity]);
 
   // Emit activity events after state update
-  useEffect(() => {
-    if (pendingEvents.length > 0) {
-      pendingEvents.forEach((event) => onActivity?.(event));
-      setPendingEvents([]);
-    }
-  }, [pendingEvents, onActivity]);
+  // removed pendingEvents batching effect; events are emitted immediately above
 
   // Simulate markets appearing/disappearing
   useEffect(() => {
@@ -143,7 +139,7 @@ export default function SimulatedMarketOptions({ initialMarkets, onActivity }: S
         }
         return prev;
       });
-      if (createdEvent) setPendingEvents((prev) => [...prev, ...(createdEvent ? [createdEvent] : [])]);
+      if (createdEvent) onActivity?.(createdEvent);
     }, 5000);
     return () => clearInterval(interval);
   }, [onActivity]);

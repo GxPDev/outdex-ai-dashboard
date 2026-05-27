@@ -1,19 +1,15 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useMemo } from "react";
 import type { ActivityEvent } from "../logic/useSimulatedMarket";
 
 export default function ActivityTicker({ events }: { events: ActivityEvent[] }) {
-  const [visibleEvents, setVisibleEvents] = useState<ActivityEvent[]>([]);
   const tickerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (events.length === 0) return;
-    setVisibleEvents((prev) => {
-      const lastId = prev[prev.length - 1]?.id;
-      if (lastId !== events[events.length - 1].id) {
-        return [...prev.slice(-4), events[events.length - 1]];
-      }
-      return prev;
-    });
+  // Derive visible events directly from incoming `events` to avoid
+  // calling setState synchronously inside effects (lint rule).
+  const visibleEvents = useMemo(() => {
+    if (events.length === 0) return [] as ActivityEvent[];
+    // Keep the most recent event and a small history for the ticker.
+    return events.slice(-5);
   }, [events]);
 
   return (

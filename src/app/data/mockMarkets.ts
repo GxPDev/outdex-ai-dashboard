@@ -12,7 +12,6 @@ export const mockMarkets: Market[] = [
     participants: 120,
     closesIn: 3600,
     createdAt: Date.now(),
-    pool: 3200000, // $3.2M (premium)
   },
   {
     id: "2",
@@ -25,7 +24,6 @@ export const mockMarkets: Market[] = [
     participants: 98,
     closesIn: 7200,
     createdAt: Date.now(),
-    pool: 450000, // $450K (medium)
   },
   {
     id: "3",
@@ -34,11 +32,9 @@ export const mockMarkets: Market[] = [
     type: "CLOSE_PRICE",
     confidence: 72,
     risk: "Low",
-    currentPrice: 192.34,
+    options: ["150-170", "170-190", "190-210", "210+"],
     participants: 45,
     closesIn: 14400,
     createdAt: Date.now(),
-    helperText: "Top 5% closest predictions share the prize pool",
-    pool: 12000, // $12K (small)
   },
 ];
