@@ -32,7 +32,7 @@ export default function EnterMarketPage() {
         <SimulatedMarketOptions
           initialMarkets={mockMarkets.map((m) => ({
             ...m,
-            pool: (m as any).pool ?? 10000,
+            pool: m.pool ?? 10000,
           }))}
           onActivity={handleActivity}
         />

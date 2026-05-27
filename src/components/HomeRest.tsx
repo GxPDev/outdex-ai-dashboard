@@ -142,7 +142,7 @@ const descriptions = [
   "Markets settle fairly and transparently",
 ];
 
-function Card({ title, tag, yes, no, accent }: any) {
+function Card({ title, tag, yes, no, accent }: { title: string; tag: string; yes: string | number; no: string | number; accent?: string }) {
   return (
     <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-[0_10px_30px_rgba(15,23,42,0.06)] hover:shadow-xl transition">
       <p className="text-xs text-slate-500">{tag}</p>
@@ -223,7 +223,7 @@ function CloseCard() {
   );
 }
 
-function Social({ icon }: any) {
+function Social({ icon }: { icon?: React.ReactNode }) {
   return (
     <div className="w-10 h-10 flex items-center justify-center rounded-full border border-slate-200 hover:bg-slate-100 cursor-pointer transition">
       {icon}

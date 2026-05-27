@@ -117,13 +117,13 @@ export default function SimulatedMarketOptions({ initialMarkets, onActivity }: S
           return prev.filter((_, i) => i !== idx);
         } else if (Math.random() < 0.1 && prev.length < 6) {
           // Add a new market (simulate new market creation)
-          const newMarket: Market = {
+            const newMarket: Market = {
             id: `${Date.now()}`,
             pair: ["SOL/USD", "DOGE/USD", "TSLA", "GOOG"][Math.floor(Math.random() * 4)],
             question: "AI-generated market: Will it move?",
             type: "YES_NO",
             confidence: Math.floor(Math.random() * 100),
-            risk: ["Low", "Medium", "High"][Math.floor(Math.random() * 3)] as any,
+            risk: ["Low", "Medium", "High"][Math.floor(Math.random() * 3)] as "Low" | "Medium" | "High",
             options: ["Yes", "No"],
             participants: Math.floor(Math.random() * 100),
             closesIn: 1800 + Math.floor(Math.random() * 3600),

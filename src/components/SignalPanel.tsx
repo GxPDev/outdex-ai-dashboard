@@ -32,49 +32,28 @@ type Signal = {
   chart?: number[];
 };
 
-const signals: Signal[] = [
-  {
-    asset: "EUR/USD",
-    title: "Breakout pressure",
-    prob: "68%",
-    label: "High Confidence",
-    trend: "up",
-    timestamp: Date.now() - 2 * 60 * 1000,
-  },
-  {
-    asset: "BTC",
-    title: "Momentum acceleration",
-    prob: "72%",
-    label: "High Confidence",
-    trend: "up",
-    timestamp: Date.now() - 3 * 60 * 1000,
-  },
-  {
-    asset: "NVDA",
-    title: "Sentiment surge",
-    prob: "64%",
-    label: "Emerging",
-    trend: "up",
-    timestamp: Date.now() - 5 * 60 * 1000,
-  },
-  {
-    asset: "Gold",
-    title: "Range compression",
-    prob: "58%",
-    label: "Speculative",
-    trend: "flat",
-    timestamp: Date.now() - 8 * 60 * 1000,
-  },
-];
+// Initial signals will be seeded on mount to avoid calling Date.now() during module render
 
 export default function SignalPanel() {
-  const [liveSignals, setLiveSignals] = useState(signals);
-  const [now, setNow] = useState(Date.now());
-  const [lastUpdate, setLastUpdate] = useState(Date.now());
-  const [mounted, setMounted] = useState(false);
+  const [liveSignals, setLiveSignals] = useState<Signal[]>([]);
+  const [now, setNow] = useState(0);
+  const [lastUpdate, setLastUpdate] = useState(0);
 
+  // Seed initial signals after mount (avoid Date.now in module render)
   useEffect(() => {
-    setMounted(true);
+    const initial: Signal[] = [
+      { asset: "EUR/USD", title: "Breakout pressure", prob: "68%", label: "High Confidence", trend: "up", timestamp: Date.now() - 2 * 60 * 1000 },
+      { asset: "BTC", title: "Momentum acceleration", prob: "72%", label: "High Confidence", trend: "up", timestamp: Date.now() - 3 * 60 * 1000 },
+      { asset: "NVDA", title: "Sentiment surge", prob: "64%", label: "Emerging", trend: "up", timestamp: Date.now() - 5 * 60 * 1000 },
+      { asset: "Gold", title: "Range compression", prob: "58%", label: "Speculative", trend: "flat", timestamp: Date.now() - 8 * 60 * 1000 },
+    ];
+    // Defer state initialization to avoid synchronous setState inside effect
+    const t = setTimeout(() => {
+      setLiveSignals(initial);
+      setNow(Date.now());
+      setLastUpdate(Date.now());
+    }, 0);
+    return () => clearTimeout(t);
   }, []);
 
   // Simulate panel update every 30s (or tie to real data update)
@@ -183,7 +162,7 @@ export default function SignalPanel() {
                   <p className="text-sm font-semibold text-slate-900">{s.prob}</p>
                   <p className="text-xs text-green-600">{s.label}</p>
                   <span className="text-xs text-slate-400 mt-1">
-                    {mounted ? formatTimeAgo(s.timestamp) : "—"}
+                    {lastUpdate ? formatTimeAgo(s.timestamp) : "—"}
                   </span>
                 </div>
               </div>

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { Market, MarketStatus, resolveMarket } from "./marketLifecycle";
+
+type MarketInternal = Market & { _lockedAt?: number; _resolvingAt?: number };
 // If resolveMarket is not exported from marketLifecycle, implement it below:
 
 // Example implementation if needed:
@@ -8,7 +10,7 @@ import { Market, MarketStatus, resolveMarket } from "./marketLifecycle";
 // }
 
 // Simulate a final value for each market type
-function simulateFinalValue(market: Market): any {
+function simulateFinalValue(market: Market): string | number | null {
   if (market.type === "YES_NO") {
     return Math.random() > 0.5 ? "Yes" : "No";
   }
@@ -26,7 +28,7 @@ function simulateFinalValue(market: Market): any {
 }
 
 export function useMarketLifecycleEngine(initialMarkets: Market[]) {
-  const [markets, setMarkets] = useState<Market[]>(initialMarkets);
+  const [markets, setMarkets] = useState<MarketInternal[]>(initialMarkets as MarketInternal[]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -42,24 +44,24 @@ export function useMarketLifecycleEngine(initialMarkets: Market[]) {
           }
           if (market.status === "LOCKED") {
             // After a short delay, move to RESOLVING
-            if (!(market as any)._lockedAt) {
+            if (!market._lockedAt) {
               return { ...market, _lockedAt: Date.now() };
             }
-            if (Date.now() - (market as any)._lockedAt > 2000) {
-              const { _lockedAt, ...rest } = market as any;
-              return { ...rest, status: "RESOLVING" };
+            if (Date.now() - (market._lockedAt as number) > 2000) {
+              const { _lockedAt, ...rest } = market as MarketInternal;
+              return { ...(rest as MarketInternal), status: "RESOLVING" };
             }
             return market;
           }
           if (market.status === "RESOLVING") {
             // After a short delay, resolve
-            if (!(market as any)._resolvingAt) {
+            if (!market._resolvingAt) {
               return { ...market, _resolvingAt: Date.now() };
             }
-            if (Date.now() - (market as any)._resolvingAt > 2000) {
+            if (Date.now() - (market._resolvingAt as number) > 2000) {
               const finalValue = simulateFinalValue(market);
-              const { _resolvingAt, ...rest } = market as any;
-              return resolveMarket({ ...rest }, finalValue);
+              const { _resolvingAt, ...rest } = market as MarketInternal;
+              return resolveMarket({ ...(rest as Market) }, finalValue as string | number);
             }
             return market;
           }

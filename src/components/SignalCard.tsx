@@ -25,7 +25,7 @@ export function computeConfidence(prices: number[]) {
   const min = Math.min(...prices);
   const volatility = (max - min) / min;
   // normalize
-  let confidence = slope * 100 + volatility * 50;
+  const confidence = slope * 100 + volatility * 50;
   return Math.min(95, Math.max(50, Math.round(confidence)));
 }
 // Utility to get sparkline style from type, confidence, direction
@@ -114,8 +114,18 @@ export type Signal = {
 };
 
 export default function SignalCard({ signal: initialSignal, icon }: { signal: Signal, icon?: React.ReactNode }) {
-  const [signal, setSignal] = useState<Signal>(initialSignal);
-  if (!signal || typeof signal !== 'object') return null;
+  const defaultSignal: Signal = {
+    pair: "",
+    timeframe: "",
+    type: "",
+    confidence: 50,
+    bias: "bullish",
+    volume: 0,
+    traders: 0,
+    closingIn: "--",
+    entryWindow: 0,
+  };
+  const [signal, setSignal] = useState<Signal>(initialSignal || defaultSignal);
   // Fallbacks for missing fields
   const pair = signal.pair;
   const timeframe = signal.timeframe;

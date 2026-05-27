@@ -9,6 +9,7 @@ export interface Market {
   risk: "Low" | "Medium" | "High";
   options: string[];
   participants: number;
+  pool?: number;
   closesIn: number; // seconds
   createdAt: number;
 }

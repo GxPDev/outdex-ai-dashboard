@@ -13,8 +13,8 @@ export interface Market {
   createdAt: number;
   closesAt?: number;
   closesIn?: number;
-  finalResult?: any;
-  predictions?: any[];
+  finalResult?: string | number;
+  predictions?: { userId: string; value: string | number }[];
   confidence?: number;
   risk?: "Low" | "Medium" | "High";
   currentPrice?: number;

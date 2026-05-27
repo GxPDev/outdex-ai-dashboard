@@ -8,10 +8,17 @@ import { MarketStatusBadge } from "./MarketStatusBadge";
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState, useMemo } from "react";
-import type { Market } from "../types/market";
+
+type MarketWithUI = BaseMarket & {
+  winners?: string[];
+  payoutPerWinner?: number | string | null;
+  resolvedAt?: number | null;
+  finalResult?: string | number | null;
+  status?: string;
+};
 
 // Generate dynamic AI reasoning for a market
-function useZinaxReasoning(market: Market) {
+function useZinaxReasoning(market: MarketWithUI) {
   const [tick, setTick] = useState(0);
   useEffect(() => {
     const id = setInterval(() => setTick((t) => t + 1), 3500 + Math.random() * 2000);
@@ -47,14 +54,6 @@ function useZinaxReasoning(market: Market) {
     return reasons[Math.floor(tick % reasons.length)] || "Zinax is monitoring market conditions...";
   }, [market, tick]);
 }
-
-type MarketWithUI = BaseMarket & {
-  winners?: string[];
-  payoutPerWinner?: number | string;
-  resolvedAt?: number;
-  finalResult?: any;
-  status?: string;
-};
 
 type MarketCardProps = { market: MarketWithUI };
 

@@ -15,7 +15,7 @@ export interface Market {
   status: MarketStatus;
   createdAt: number;
   closesAt: number;
-  finalResult?: any;
+  finalResult?: string | number;
   resolvedAt?: number | null;
   winners?: string[];
   payoutPerWinner?: number | null;
@@ -53,10 +53,10 @@ export function lockMarket(market: Market): Market {
   return { ...market, status: "LOCKED" };
 }
 
-export function resolveMarket(market: Market, priceData: any): Market {
+export function resolveMarket(market: Market, priceData: string | number): Market {
   if (market.status !== "LOCKED") throw new Error("Market must be LOCKED to resolve");
   let winners: string[] = [];
-  let finalResult: any = undefined;
+  let finalResult: string | number | undefined = undefined;
   let payoutPerWinner: number | null = null;
 
   if (market.type === "CLOSE_PRICE") {
